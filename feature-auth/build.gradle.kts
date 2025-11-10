@@ -3,8 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.services)
-    alias(libs.plugins.hilt.android)
-    kotlin("kapt")
+    alias(libs.plugins.crashlytics)
 }
 
 android {
@@ -44,6 +43,8 @@ dependencies {
 
     // Core module connection
     implementation(project(":core"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
 
     // Compose
     implementation(libs.androidx.core.ktx)
@@ -54,6 +55,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.material3)
     implementation(libs.compose.google.fonts)
+    implementation(libs.androidx.compose.material.icons.extended)
 
 
 
@@ -64,24 +66,27 @@ dependencies {
     // Core Compose
     implementation(libs.androidx.compose.ui.graphics)
 
+    // Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
 
-    // Hilt (with kapt)
-    implementation(libs.hilt.android)
+
+    // Navigation
     implementation(libs.androidx.navigation.runtime.ktx)
-    implementation(libs.androidx.hilt.navigation.compose)
-    kapt(libs.hilt.compiler)
 
-// Firebase (only if used in this feature directly)
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.auth)
-
-// Compose tooling
+    // Compose tooling
     implementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.compose.ui.tooling.preview)
 
-// Optional: ViewModel support
+    // Optional: ViewModel support
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.navigation.compose)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
 
 
     testImplementation(libs.junit)

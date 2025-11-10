@@ -1,112 +1,90 @@
 ****📱 ComposeAuth****
 
-ComposeAuth is a modern Android authentication module built with Jetpack Compose, following a clean
-modular architecture. It demonstrates best practices for building scalable, maintainable, and
-responsive UI screens for login and registration.
+ComposeAuth is a modern Android application built with Jetpack Compose, following a clean, multi-module architecture. It demonstrates best practices for building scalable, maintainable, and responsive UI screens for login and registration.
 
 **🚀 Features**
 
-🔐 Authentication Screens — Login, Register, Forgot Password
+🔐 Authentication Screens — Login, Register
 
-🎨 Jetpack Compose UI — Built fully using Compose; no XML layouts
+🎨 Jetpack Compose UI — Built fully using Compose; no XML layouts.
 
-📦 Modular Architecture — Separation of concerns via app, core, and feature-auth modules
+📦 Modular Architecture — Clean separation of concerns between UI, domain, and data layers.
 
-🌈 Material 3 Design — Modern components with theming support
+🌈 Shared Theme — Centralized Material 3 theme in the `:core` module.
 
-🧠 State Management — Using ViewModel and StateFlow for reactive UI
+🧠 State Management — Using `ViewModel` and `StateFlow` for a reactive UI.
 
-⚙️ Validation — Real-time form validation for email & password fields
+⚙️ Validation — Real-time form validation for email & password fields.
 
-📱 Responsive Layouts — Adaptive design for all screen sizes
+👁️ Show/Hide Password — Toggle visibility for password fields.
 
-🧩 Custom Typography — Integrated with Google Fonts (DM Sans & Inter)
+✈️ Offline Handling — A Lottie-powered screen for no-internet scenarios.
+
+**✨ Recent Changes**
+
+- **Major Architectural Refactoring**: Migrated to a full multi-module architecture (`app`, `core`, `domain`, `data`, `feature-auth`, `feature-home`) to enforce separation of concerns and improve scalability.
+- **Dependency Injection with Koin**: Integrated Koin for dependency injection across all modules, simplifying the management of dependencies like ViewModels and Repositories.
+- **Firebase Integration**:
+    - **Firebase Auth**: Added for handling user authentication.
+    - **Crashlytics**: Integrated for crash reporting and app stability monitoring.
+- **Centralized Navigation**: Implemented a `NavigationProvider` system in `:core` to allow feature modules to define their navigation routes in a decoupled way.
+- **Shared UI & Theme**: Moved the Material 3 `Theme`, `Color`, and `Typography` into the `:core` module, allowing a consistent look and feel across all features.
+- **Enhanced UX Features**:
+    - **Show/Hide Password**: Added an icon to toggle password visibility in input fields.
+    - **Progress Dialog**: Implemented a reusable, modal `ProgressDialog` to prevent user interaction during network operations.
+    - **No Internet Screen**: Created a `NoInternetScreen` using a Lottie animation to gracefully handle offline states.
+- **Network Connectivity Observer**: Added a `NetworkObserver` utility in `:core` that uses `callbackFlow` to provide a reactive stream of the device's network status.
 
 **🏗️ Project Structure**
 
 ComposeAuth/
 │
-├── app/                 # Main application module (entry point, navigation, theme)
-│   ├── ui/theme/        # Global typography, colors, and shapes
-│   └── MainActivity.kt
-│
-├── core/                # Shared utilities and base components
-│   ├── utils/           # Common validation logic, constants, extensions
-│   └── ui/              # Reusable composables (buttons, text fields, etc.)
-│
-└── feature-auth/        # Authentication feature module
-├── ui/login/        # Login screen, state handling, validation
-├── ui/register/     # Registration screen
-└── viewmodel/       # Auth ViewModels & use cases
+├── app/                 # Main application module (DI, entry point)
+├── core/                # Shared utilities, navigation, and base UI components
+├── data/                # Data sources and repository implementations
+├── domain/              # Core data models and repository interfaces
+├── feature-auth/        # Self-contained authentication feature
+└── feature-home/        # Self-contained home screen feature
 
 **💡 Tech Stack**
 
-Category	           Technology
-Language               Kotlin
-UI Toolkit       	   Jetpack Compose
-Architecture	       MVVM + Clean Architecture
-Navigation	           Jetpack Navigation-Compose
-Dependency             Injection	Hilt (optional / coming soon)
-Async / Reactive	   Kotlin Coroutines + StateFlow
-Fonts	Google Fonts   (DM Sans, Inter)
+| Category           | Technology                                        |
+|--------------------|---------------------------------------------------|
+| **Language**       | Kotlin                                            |
+| **UI Toolkit**     | Jetpack Compose                                   |
+| **Architecture**   | MVVM + Clean Architecture (Multi-Module)          |
+| **Navigation**     | Jetpack Navigation-Compose                        |
+| **Dependency Injection** | Koin                                              |
+| **Async / Reactive** | Kotlin Coroutines + StateFlow                     |
+| **Networking**     | Firebase Auth                                     |
+| **Crash Reporting**| Firebase Crashlytics                              |
+| **Animations**     | Lottie                                            |
 
 **🧩 Setup Instructions**
 
 1️⃣ Clone the repository
 
+```bash
 git clone https://github.com/yourusername/ComposeAuth.git
 cd ComposeAuth
-
+```
 
 2️⃣ Open in Android Studio
 
-Use Android Studio Hedgehog or later
-
-Ensure Kotlin ≥ 1.9 and Compose Compiler ≥ 1.6.0
+- Use Android Studio Hedgehog or later.
+- Ensure you have a `google-services.json` file from your Firebase project placed in the `app/` directory.
 
 3️⃣ Build the project
 
+```bash
 ./gradlew assembleDebug
-
-4️⃣ Run on Emulator or Physical Device
-
-Use Android Studio’s Run configuration or CLI:
-./gradlew installDebug
-
-Key Implementation Details
-
-
-**🧠 Form Validation:**
-Email and password fields are validated using mutableStateOf<String?> to track errors.
-Error messages appear dynamically under input fields when invalid.
-
-UI Responsiveness:
-The layout adapts automatically to screen size and orientation changes.
-Scrollable content is enabled using Column(Modifier.verticalScroll()).
-
-Typography:
-Custom Google Fonts are used — DM Sans for headings, Inter for body text.
-Fonts are defined in the app module theme and shared across modules.
-
-**🧭 Roadmap**
-
-Add Register & Forgot Password Screens
-
-Integrate Firebase Authentication
-
-Add Unit Tests
-
-Add Dark Mode support
-
-Local & Remote Validation Layers
+```
 
 **🪪 License**
 
 Copyright (c) 2025 Abdul Hanan Khan
 
-Licensed under the MIT License.  
-You may use, copy, modify, and distribute this software for any purpose,  
-provided that the above copyright notice and this permission notice are included.
+Licensed under the MIT License. You may use, copy, modify, and distribute this software for any purpose, provided that the above copyright notice and this permission notice are included in all copies or substantial portions of the Software.
 
 **💬 Contact**
 

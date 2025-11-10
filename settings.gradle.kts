@@ -24,3 +24,6 @@ rootProject.name = "ComposeAuth"
 include(":app")
 include(":core")
 include(":feature-auth")
+include(":domain")
+include(":data")
+include(":feature-home")

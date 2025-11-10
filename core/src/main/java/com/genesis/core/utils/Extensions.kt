@@ -3,6 +3,8 @@ package com.genesis.core.utils
 import android.util.Patterns
 import com.genesis.core.model.User
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * Converts FirebaseUser → User model (for repository use)
@@ -34,12 +36,14 @@ fun String.validatePassword(): String? = when {
 }
 
 /**
- * Generic safe call for Firebase operations with Result wrapper.
+ * Generic safe call for suspend functions with Result wrapper.
  */
-inline fun <T> safeCall(action: () -> T): Result<T> {
-    return try {
-        Result.success(action())
-    } catch (e: Exception) {
-        Result.failure(e)
+suspend inline fun <T> safeCall(crossinline action: suspend () -> T): Result<T> {
+    return withContext(Dispatchers.IO) {
+        try {
+            Result.success(action())
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }

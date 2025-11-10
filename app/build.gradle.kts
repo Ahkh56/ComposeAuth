@@ -3,8 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.services)
-    alias(libs.plugins.hilt.android)
-    kotlin("kapt")
+    alias(libs.plugins.crashlytics)
 }
 
 android {
@@ -42,14 +41,11 @@ android {
     }
 }
 
-hilt {
-    enableAggregatingTask = false
-}
-
-
 dependencies {
 
     implementation(project(":feature-auth"))
+    implementation(project(":data"))
+    implementation(project(":feature-home"))
     implementation(project(":core"))
 
     implementation(libs.androidx.core.ktx)
@@ -65,17 +61,19 @@ dependencies {
     implementation(libs.sdp)
     implementation(libs.ssp)
 
-    // Navigation
-    implementation(libs.nav.compose)
+    // Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
 
-    // Hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-    implementation(libs.javapoet)
+    // Lottie
+    implementation(libs.lottie.compose)
 
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
+    implementation(libs.androidx.navigation.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

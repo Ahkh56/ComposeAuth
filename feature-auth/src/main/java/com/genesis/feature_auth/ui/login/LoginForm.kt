@@ -1,5 +1,6 @@
 package com.genesis.feature_auth.ui.login
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,7 +12,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,10 +45,12 @@ import com.genesis.core.utils.validatePassword
 @Composable
 fun LoginForm(
     modifier: Modifier = Modifier,
-    onLogin: (email: String, password: String) -> Unit
+    onLogin: (email: String, password: String) -> Unit,
+    onRegisterClick: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
 
     var emailError by remember { mutableStateOf<String?>(null) }
     var passwordError by remember { mutableStateOf<String?>(null) }
@@ -107,11 +116,21 @@ fun LoginForm(
                 value = password,
                 onValueChange = {
                     password = it
-                    passwordError = null },
+                    passwordError = null
+                },
                 label = { Text("Password") },
                 isError = passwordError != null,
-                visualTransformation = PasswordVisualTransformation(),
-                modifier = Modifier.fillMaxWidth()
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                modifier = Modifier.fillMaxWidth(),
+                trailingIcon = {
+                    val image = if (passwordVisible)
+                        Icons.Filled.Visibility
+                    else Icons.Filled.VisibilityOff
+
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(imageVector = image, "")
+                    }
+                }
             )
 
 
@@ -120,7 +139,8 @@ fun LoginForm(
                     text = passwordError ?: "",
                     color = Color.Red,
                     fontSize = 14.sp,
-                    modifier = Modifier.padding(start = 16.dp)
+                    modifier = Modifier
+                        .padding(start = 16.dp)
                         .align(Alignment.Start)
                 )
             }
@@ -154,7 +174,12 @@ fun LoginForm(
         ) {
             Text("Don't have an account?", color = Color.Black, fontSize = 18.sp)
             Spacer(modifier = Modifier.width(8.dp))
-            Text("Register", color = Purple40, fontSize = 18.sp)
+            Text(
+                text = "Register",
+                color = Purple40,
+                fontSize = 18.sp,
+                modifier = Modifier.clickable { onRegisterClick() }
+            )
         }
     }
 }
@@ -163,5 +188,5 @@ fun LoginForm(
 @Preview(showBackground = true, showSystemUi = true, name = "Login Form Preview")
 @Composable
 private fun LoginFormPreview() {
-    LoginForm(onLogin = { _, _ -> })
+    LoginForm(onLogin = { _, _ -> }, onRegisterClick = {})
 }

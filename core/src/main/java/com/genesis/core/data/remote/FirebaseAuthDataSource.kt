@@ -1,5 +1,6 @@
 package com.genesis.core.data.remote
 
+import com.genesis.core.utils.safeCall
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.tasks.await
@@ -7,20 +8,16 @@ import kotlinx.coroutines.tasks.await
 class FirebaseAuthDataSource(private val firebaseAuth: FirebaseAuth) {
 
     suspend fun login(email: String, password: String): Result<FirebaseUser> {
-        return try {
+        return safeCall {
             val authResult = firebaseAuth.signInWithEmailAndPassword(email, password).await()
-            Result.success(authResult.user!!)
-        } catch (e: Exception) {
-            Result.failure(e)
+            authResult.user!!
         }
     }
 
     suspend fun register(email: String, password: String): Result<FirebaseUser> {
-        return try {
+        return safeCall {
             val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
-            Result.success(authResult.user!!)
-        } catch (e: Exception) {
-            Result.failure(e)
+            authResult.user!!
         }
     }
 

@@ -2,44 +2,48 @@ package com.genesis.feature_auth.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.genesis.feature_auth.data.repository.AuthRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.genesis.data.repository.AuthRepository
+import com.genesis.domain.model.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-open class AuthViewModel @Inject constructor(
-    // FIX 1: Changed 'private' to 'protected'
-    // This allows subclasses like FakeAuthViewModel to access the repository.
-    protected val repository: AuthRepository
-) : ViewModel() {
+class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
 
-    private val _loginState = MutableStateFlow<Result<String>?>(null)
-    val loginState: StateFlow<Result<String>?> = _loginState
+    private val _loginState = MutableStateFlow<Result<User>?>(null)
+    val loginState: StateFlow<Result<User>?> = _loginState
 
-    open fun login(email: String, password: String) {
+    private val _registerState = MutableStateFlow<Result<User>?>(null)
+    val registerState: StateFlow<Result<User>?> = _registerState
+
+    private val _logoutState = MutableStateFlow<Result<Unit>?>(null)
+    val logoutState: StateFlow<Result<Unit>?> = _logoutState
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
+    fun login(email: String, password: String) {
         viewModelScope.launch {
-            repository.login(email, password) { success, error ->
-                _loginState.value = if (success) Result.success("Login successful")
-                else Result.failure(Exception(error))
-            }
+            _isLoading.value = true
+            val result = repository.login(email, password)
+            _loginState.value = result
+            _isLoading.value = false
         }
     }
 
-    // FIX 2: Added 'open' to allow overriding in fakes/mocks if needed.
-    open fun register(email: String, password: String) {
+    fun register(email: String, password: String) {
         viewModelScope.launch {
-            repository.register(email, password) { success, error ->
-                _loginState.value = if (success) Result.success("Registration successful")
-                else Result.failure(Exception(error))
-            }
+            _isLoading.value = true
+            val result = repository.register(email, password)
+            _registerState.value = result
+            _isLoading.value = false
         }
     }
 
-    // FIX 3: Added 'open' to allow overriding in fakes/mocks if needed.
-    open fun logout() {
-        repository.logout()
+    fun logout() {
+        viewModelScope.launch {
+            val result = runCatching { repository.logout() }
+            _logoutState.value = result
+        }
     }
 }
