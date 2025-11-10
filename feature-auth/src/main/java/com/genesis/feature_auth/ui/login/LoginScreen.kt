@@ -3,11 +3,8 @@ package com.genesis.feature_auth.ui.login
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -20,7 +17,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import com.genesis.core.ui.components.ProgressDialog
 import com.genesis.feature_auth.viewmodel.AuthViewModel
@@ -39,9 +35,6 @@ fun LoginScreen(
     val scope = rememberCoroutineScope()
 
     Scaffold(
-        modifier = Modifier
-            .padding(WindowInsets.safeDrawing.asPaddingValues()),
-        containerColor = Color.White,
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Box(

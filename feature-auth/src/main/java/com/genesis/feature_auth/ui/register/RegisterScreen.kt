@@ -18,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import com.genesis.core.ui.components.ProgressDialog
 import com.genesis.feature_auth.viewmodel.AuthViewModel
@@ -37,9 +36,6 @@ fun RegisterScreen(
     val scope = rememberCoroutineScope()
 
     Scaffold(
-        modifier = Modifier
-            .padding(WindowInsets.safeDrawing.asPaddingValues()),
-        containerColor = Color.White,
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Box(
@@ -65,7 +61,7 @@ fun RegisterScreen(
     LaunchedEffect(registerState) {
         registerState?.let {
             if (it.isSuccess) {
-                scope.launch { 
+                scope.launch {
                     snackbarHostState.showSnackbar("Registration successful")
                 }
                 navController.navigate("login") {

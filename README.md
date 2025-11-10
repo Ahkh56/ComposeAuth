@@ -10,6 +10,8 @@ ComposeAuth is a modern Android application built with Jetpack Compose, followin
 
 📦 Modular Architecture — Clean separation of concerns between UI, domain, and data layers.
 
+🌓 Dark Mode Support — The app is fully theme-reactive and adapts to the system's light or dark mode setting.
+
 🌈 Shared Theme — Centralized Material 3 theme in the `:core` module.
 
 🧠 State Management — Using `ViewModel` and `StateFlow` for a reactive UI.
@@ -22,6 +24,7 @@ ComposeAuth is a modern Android application built with Jetpack Compose, followin
 
 **✨ Recent Changes**
 
+- **Dark Mode Implementation**: Added full support for dark mode. The app now automatically adapts to the system theme, and all UI components have been updated to be theme-aware.
 - **Major Architectural Refactoring**: Migrated to a full multi-module architecture (`app`, `core`, `domain`, `data`, `feature-auth`, `feature-home`) to enforce separation of concerns and improve scalability.
 - **Dependency Injection with Koin**: Integrated Koin for dependency injection across all modules, simplifying the management of dependencies like ViewModels and Repositories.
 - **Firebase Integration**:
@@ -33,7 +36,7 @@ ComposeAuth is a modern Android application built with Jetpack Compose, followin
     - **Show/Hide Password**: Added an icon to toggle password visibility in input fields.
     - **Progress Dialog**: Implemented a reusable, modal `ProgressDialog` to prevent user interaction during network operations.
     - **No Internet Screen**: Created a `NoInternetScreen` using a Lottie animation to gracefully handle offline states.
-- **Network Connectivity Observer**: Added a `NetworkObserver` utility in `:core` that uses `callbackFlow` to provide a reactive stream of the device's network status.
+- **Resilient Network Observer**: Implemented and subsequently refined a `NetworkObserver` in `:core`. It now provides a reliable, real-time stream of the device's network status and is resilient to race conditions that could cause false negatives.
 
 **🏗️ Project Structure**
 
